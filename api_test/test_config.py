@@ -38,3 +38,9 @@ class TestConfig:
         config = Config()
         config.change_api_token('new_test_token')
         assert config.API_TOKEN == 'new_test_token'
+
+    def test_set_api_query(self):
+        config = Config()
+        query = config.set_api_query("SERP Overview")
+        expected_query = config.default_url + config.default_api_headlines["SERP Overview"]
+        assert query == expected_query
