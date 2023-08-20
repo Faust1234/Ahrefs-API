@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+from datetime import date as default_date
 from typing import Dict
 
 
@@ -41,3 +43,21 @@ class Config:
         :return: api query
         """
         return self.default_url + self.default_api_headlines.get(headlines_name, "")
+
+
+@dataclass
+class DefaultSettingOfRequest:
+    """
+    Default data for api request to api.ahrefs.com
+    """
+    target: str  # The target of the search: a domain or a URL.
+    date: str  # A date to report metrics on in YYYY-MM-DD format.
+    date_from: str  # The start date of the historical period in YYYY-MM-DD format.
+
+    date_to: str = default_date.today()  # The end date of the historical period in YYYY-MM-DD format.
+    country: str = "us"  # A two-letter country code.
+    output: str = "json"  # The protocol of your target. Allowed values: both, http, https
+    protocol: str = "both"  # The output format. Allowed values: json, csv, xml, php
+    mode: str = "subdomains"  # The scope of the search based on the target you entered. Allowed values: exact, prefix, domain, subdomains
+    volume_mode: str = "monthly"  # The search volume calculation mode: monthly or average. It affects volume, traffic, and traffic value. Allowed values: monthly, average
+    history_grouping: str = "monthly"  # The time interval used to group historical data. Allowed values: daily, weekly, monthly

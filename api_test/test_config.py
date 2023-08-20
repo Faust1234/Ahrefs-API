@@ -1,4 +1,6 @@
-from ahrefs_api.configs import Config  # Replace 'your_module' with the actual module name
+from datetime import date
+
+from ahrefs_api.configs import Config, DefaultSettingOfRequest  # Replace 'your_module' with the actual module name
 
 
 class TestConfig:
@@ -44,3 +46,13 @@ class TestConfig:
         query = config.set_api_query("SERP Overview")
         expected_query = config.default_url + config.default_api_headlines["SERP Overview"]
         assert query == expected_query
+
+    def test_default_values(self):
+        default_settings = DefaultSettingOfRequest(target="example.com", date="2023-08-01", date_from="2023-07-01")
+        assert default_settings.date_to == date.today()
+        assert default_settings.country == "us"
+        assert default_settings.output == "json"
+        assert default_settings.protocol == "both"
+        assert default_settings.mode == "subdomains"
+        assert default_settings.volume_mode == "monthly"
+        assert default_settings.history_grouping == "monthly"
