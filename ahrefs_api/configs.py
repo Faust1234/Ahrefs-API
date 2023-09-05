@@ -2,6 +2,8 @@ from dataclasses import dataclass
 from datetime import date as default_date
 from typing import Dict
 
+from constans.api_constans import SITE_EXPLORER_HEADLINES
+
 
 class Config:
     """
@@ -9,7 +11,7 @@ class Config:
     """
 
     API_TOKEN: str = ""  # default api_token from ahrefs.com, with this not works for gives data from API
-    default_url: str = "https://api.ahrefs.com/v3/"  # default url for all  endpoint
+    default_url: str = "https://api.ahrefs.com/v3/"  # default url for all endpoint
     default_api_headlines: Dict[str, str] = {
         "Public": "public/",
         "SERP Overview": "serp-overview/",
@@ -39,16 +41,16 @@ class Config:
     def set_api_query(self, headlines_name: str) -> str:
         """
         Returns the default request for api requests
-        :param headlines_name: name headlines API
-        :return: api query
+        :param headlines_name: name headlines endpoint
+        :return: api query, type str
         """
-        return self.default_url + self.default_api_headlines.get(headlines_name, "")
+        return self.default_url + SITE_EXPLORER_HEADLINES.get(headlines_name, "")
 
 
 @dataclass
 class DefaultSettingOfRequest:
     """
-    Default data for api request to api.ahrefs.com
+    Default params for api request to api.ahrefs.com
     """
     target: str  # The target of the search: a domain or a URL.
     date: str  # A date to report metrics on in YYYY-MM-DD format.
@@ -61,3 +63,7 @@ class DefaultSettingOfRequest:
     mode: str = "subdomains"  # The scope of the search based on the target you entered. Allowed values: exact, prefix, domain, subdomains
     volume_mode: str = "monthly"  # The search volume calculation mode: monthly or average. It affects volume, traffic, and traffic value. Allowed values: monthly, average
     history_grouping: str = "monthly"  # The time interval used to group historical data. Allowed values: daily, weekly, monthly
+
+    def __post_init__(self):
+        if self.date_from is None:
+            self.date_from = self.date
